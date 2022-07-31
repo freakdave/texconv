@@ -31,7 +31,7 @@ public:
 	 *   Any number of filenames may be given. All images must be square. Any missing
 	 *   mipmap levels will be generated automatically.
 	 */
-	bool load(const QStringList& filenames, const int textureType, const Qt::TransformationMode mipmapFilter);
+    bool load(const QStringList& filenames, const int textureType, const Qt::TransformationMode mipmapFilter, const bool mirrorVertically = true, const bool mirrorHorizontally = false);
 	void unloadAll();
 
 	bool hasMipmaps() const { return images.size() > 1; }

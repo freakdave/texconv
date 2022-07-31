@@ -89,6 +89,8 @@ int main(int argc, char** argv) {
 	parser.addOption(QCommandLineOption(QStringList() << "n" << "nearest", "Use nearest-neighbor filtering for scaling mipmaps."));
 	parser.addOption(QCommandLineOption(QStringList() << "b" << "bilinear", "Use bilinear filtering for scaling mipmaps."));
 	parser.addOption(QCommandLineOption("vqcodeusage", "Output an image that visualizes compression code usage.", "filename"));
+    parser.addOption(QCommandLineOption("mirrorv", "Output a vertically mirrored texture."));
+    parser.addOption(QCommandLineOption("mirrorh", "Output a horizontally mirrored texture."));
 	parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
 	parser.process(app);
 
@@ -159,7 +161,7 @@ int main(int argc, char** argv) {
 
 	// Time to load the image(s)
 	ImageContainer images;
-	if (!images.load(srcFilenames, textureType, mipmapFilter)) {
+    if (!images.load(srcFilenames, textureType, mipmapFilter, parser.isSet("mirrorv"), parser.isSet("mirrorh"))) {
 		return -1;
 	}
 

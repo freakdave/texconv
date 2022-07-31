@@ -2,7 +2,7 @@
 #include "imagecontainer.h"
 #include "common.h"
 
-bool ImageContainer::load(const QStringList& filenames, const int textureType, const Qt::TransformationMode mipmapFilter) {
+bool ImageContainer::load(const QStringList& filenames, const int textureType, const Qt::TransformationMode mipmapFilter, const bool mirrorVertically, const bool mirrorHorizontally) {
 	const bool mipmapped	= (textureType & FLAG_MIPMAPPED);
 
 	if ((filenames.size() > 1) && !mipmapped) {
@@ -29,8 +29,8 @@ bool ImageContainer::load(const QStringList& filenames, const int textureType, c
 			return false;
 		}
 
-		textureSize = textureSize.expandedTo(img.size());
-		images.insert(img.width(), img);
+        textureSize = textureSize.expandedTo(img.size());
+        images.insert(img.width(), img.mirrored(mirrorHorizontally, mirrorVertically));
 
 		qDebug() << "Loaded image" << filename;
 	}
