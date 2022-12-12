@@ -158,6 +158,10 @@ PROGRAM FLAGS
 	Use bilinear filtering when generating missing mipmap levels. This is the
 	default filter for all 16-bit textures, for higher quality mipmaps.
 
+-k or -kaiser
+	Use kaiser filtering when generating missing mipmap levels. This is a custom 
+	filter for all 16-bit textures, for higher quality mipmaps.
+
 -vqcodeusage <filename>
 	Outputs an image that visualizes compression code usage. Will only do 
 	something for compressed textures.

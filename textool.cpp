@@ -30,10 +30,12 @@ static bool g_verbose = false;
 #ifndef Q_OS_WIN32
 #define REDCOLOR		"\033[31m"
 #define YELLOWCOLOR		"\033[33m"
+#define BLUECOLOR       "\033[34m"
 #define NOCOLOR			"\033[0m"
 #else
 #define REDCOLOR		""
 #define YELLOWCOLOR		""
+#define BLUECOLOR       ""
 #define NOCOLOR			""
 #endif
 
@@ -53,6 +55,9 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
 	case QtCriticalMsg:
 		std::cerr << REDCOLOR << "[ERROR] " << qPrintable(msg) << NOCOLOR << std::endl;
 		break;
+    case QtInfoMsg:
+        std::cerr << BLUECOLOR << "[INFO] " << qPrintable(msg) << NOCOLOR << std::endl;
+        break;
 	}
 }
 
@@ -88,6 +93,7 @@ int main(int argc, char** argv) {
 	parser.addOption(QCommandLineOption(QStringList() << "v" << "verbose", "Extra printouts."));
 	parser.addOption(QCommandLineOption(QStringList() << "n" << "nearest", "Use nearest-neighbor filtering for scaling mipmaps."));
 	parser.addOption(QCommandLineOption(QStringList() << "b" << "bilinear", "Use bilinear filtering for scaling mipmaps."));
+    parser.addOption(QCommandLineOption(QStringList() << "k" << "kaiser", "Use kaiser filtering for scaling mipmaps."));
 	parser.addOption(QCommandLineOption("vqcodeusage", "Output an image that visualizes compression code usage.", "filename"));
     parser.addOption(QCommandLineOption("mirrorv", "Output a vertically mirrored texture."));
     parser.addOption(QCommandLineOption("mirrorh", "Output a horizontally mirrored texture."));
@@ -135,9 +141,10 @@ int main(int argc, char** argv) {
 	// We're doing nearest-neighbor for paletted images to avoid introducing more colors.
 	// It should probably be done for lossless vq textures as well, but there's no way of
 	// knowing if we're gonna output one of those at this stage, so that's up to the user.
-	Qt::TransformationMode mipmapFilter = isPaletted(textureType) ? Qt::FastTransformation : Qt::SmoothTransformation;
+    int mipmapFilter = isPaletted(textureType) ? Qt::FastTransformation : Qt::SmoothTransformation;
 	if (parser.isSet("nearest"))	mipmapFilter = Qt::FastTransformation;
 	if (parser.isSet("bilinear"))	mipmapFilter = Qt::SmoothTransformation;
+    if (parser.isSet("kaiser"))     mipmapFilter = MIPMAP_FILTER_KAISER;
 
 	// Stride textures have a lot of restraints, and we need to check 'em all.
 	if (textureType & FLAG_STRIDED) {

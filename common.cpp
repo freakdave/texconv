@@ -295,3 +295,31 @@ uint combineHash(const QRgb& rgba, uint seed) {
 	seed ^= qHash(rgba) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 	return seed;
 }
+
+
+// Zeroeth order bessel function
+double besselOrderZero(double x)
+{
+    double r = 1.0;
+    double t = 1.0;
+
+    for (int k = 1; true; ++k )
+    {
+        const double factor = x / double(k);
+        t *= 0.25 * factor * factor;
+        double val = t + r;
+
+        if( val == r )
+            break;
+
+        r = val;
+    }
+    return r;
+}
+
+double windowKaiserBessel(double x)
+{
+    const double alpha = 0.5;
+    double k = besselOrderZero(alpha * sqrt(1.0 - x * x)) / besselOrderZero(alpha);
+    return k;
+}

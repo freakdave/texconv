@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #include <QColor>
+#include <QImage>
 
 class ImageContainer;
 class QDataStream;
@@ -41,6 +42,10 @@ class QDataStream;
 #define MIPMAP_OFFSET_8BPP  3
 #define MIPMAP_OFFSET_16BPP 6
 
+#define MIPMAP_FILTER_NEAREST   0
+#define MIPMAP_FILTER_BILINEAR  1
+#define MIPMAP_FILTER_KAISER    2
+
 // Returns the nearest higher or equal power of two to x.
 int nextPowerOfTwo(int x);
 
@@ -75,5 +80,9 @@ void convertPaletted(QDataStream& stream, const ImageContainer& images, int text
 
 // preview.cpp
 bool generatePreview(const QString& textureFilename, const QString& paletteFilename, const QString& previewFilename, const QString& codeUsageFilename);
+
+// imagecontainer.cpp
+double windowKaiserBessel(double x);
+double besselOrderZero(double x);
 
 #endif // COMMON_H
