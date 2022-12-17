@@ -319,7 +319,7 @@ double besselOrderZero(double x)
 
 double windowKaiserBessel(double x)
 {
-    const double alpha = 0.25;
+    const double alpha = 1.0;
     double k = besselOrderZero(alpha * sqrt(1.0 - x * x)) / besselOrderZero(alpha);
     return k;
 }
