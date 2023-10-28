@@ -162,10 +162,10 @@ PROGRAM FLAGS
 	Outputs an image that visualizes compression code usage. Will only do 
 	something for compressed textures.
 
-- mirrorv
+-mirrorv
 	Output a texture that is mirrored vertically.
 
-- mirrorh
+-mirrorh
 	Output a texture that is mirrored horizontally.
 
 
